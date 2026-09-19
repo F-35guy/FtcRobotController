@@ -1,0 +1,40 @@
+package org.firstinspires.ftc.teamcode.opmodes;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.mechanisms.ProgBoardMotors;
+
+@Autonomous(name = "Simple Leave Auto", group = "Autonomous")
+public class SimpleLeaveAuto extends LinearOpMode {
+    ProgBoardMotors board = new ProgBoardMotors();
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        // Initialize the motors using the hardware map
+        board.init(hardwareMap);
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+        if (opModeIsActive()) {
+            telemetry.addData("Status", "Running - Moving Forward");
+            telemetry.update();
+
+            // Drive forward at 50% power
+            board.Straight(0.5);
+
+            // Wait for 2 seconds
+            sleep(2000);
+
+            // Stop the robot
+            board.Straight(0);
+
+            telemetry.addData("Status", "Finished");
+            telemetry.update();
+        }
+    }
+}
