@@ -28,7 +28,7 @@ public class SimpleLeaveAuto extends LinearOpMode {
             board.Straight(0.5);
 
             // Wait for 2 seconds
-            sleep(2000);
+            sleep(3000);
 
             // Stop the robot
             board.Straight(0);
