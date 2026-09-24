@@ -24,14 +24,14 @@ public class SimpleLeaveAuto extends LinearOpMode {
             telemetry.addData("Status", "Running - Moving Forward");
             telemetry.update();
 
-            // Drive forward at 50% power
-            board.Straight(0.5);
+            // Drive forward at 50% power using move(straight, strafe, turn)
+            board.move(0.5, 0, 0);
 
-            // Wait for 2 seconds
+            // Wait for 3 seconds
             sleep(3000);
 
             // Stop the robot
-            board.Straight(0);
+            board.move(0, 0, 0);
 
             telemetry.addData("Status", "Finished");
             telemetry.update();

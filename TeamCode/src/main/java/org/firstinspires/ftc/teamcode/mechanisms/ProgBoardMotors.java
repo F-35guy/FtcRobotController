@@ -40,24 +40,6 @@ public class ProgBoardMotors {
         RightFront.setPower(-straight + turn - strafe);
         RightRear.setPower(-straight + turn + strafe);
     }
-    public void Strafe(double speed) {
-        RightRear.setPower(speed);
-        LeftRear.setPower(speed);
-        LeftFront.setPower(-speed);
-        RightFront.setPower(-speed);
-    }
-    public void Turn(double speed) {
-        RightRear.setPower(speed);
-        LeftRear.setPower(speed);
-        LeftFront.setPower(speed);
-        RightFront.setPower(speed);
-    }
-    public void Straight(double speed) {
-        RightRear.setPower(-speed);
-        LeftRear.setPower(speed);
-        LeftFront.setPower(speed);
-        RightFront.setPower(-speed);
-    }
 
     public void setMotorSpeed(double speed) {
         RightRear.setPower(speed);
