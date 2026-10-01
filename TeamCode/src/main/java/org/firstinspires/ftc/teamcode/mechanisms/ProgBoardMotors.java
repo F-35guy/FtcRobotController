@@ -36,7 +36,7 @@ public class ProgBoardMotors {
 
         shooter = hwMap.get(DcMotor.class, "shooter");
         shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         intake = hwMap.get(DcMotor.class, "intake");
         intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -65,24 +65,6 @@ public class ProgBoardMotors {
 
     public void intake(double power) {
         intake.setPower(-power);
-    }
-    public void Strafe(double speed) {
-        RightRear.setPower(speed);
-        LeftRear.setPower(speed);
-        LeftFront.setPower(-speed);
-        RightFront.setPower(-speed);
-    }
-    public void Turn(double speed) {
-        RightRear.setPower(speed);
-        LeftRear.setPower(speed);
-        LeftFront.setPower(speed);
-        RightFront.setPower(speed);
-    }
-    public void Straight(double speed) {
-        RightRear.setPower(-speed);
-        LeftRear.setPower(speed);
-        LeftFront.setPower(speed);
-        RightFront.setPower(-speed);
     }
 
     public void setMotorSpeed(double speed) {

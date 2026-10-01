@@ -16,13 +16,23 @@ public class MotorGamePadOpMode extends OpMode {
     boolean lastA = false;
     boolean lastB = false;
     boolean shooterOn = false;
+    boolean lastRightStickButton = false;
+    boolean halfSpeed = false;
 
     @Override
     public void loop() {
-        double strafe = gamepad1.right_stick_x;
+        boolean currentRightStickButton = gamepad1.right_stick_button;
+        if (currentRightStickButton && !lastRightStickButton) {
+            halfSpeed = !halfSpeed;
+        }
+        lastRightStickButton = currentRightStickButton;
+
+        double driveScale = halfSpeed ? 0.5 : 1.0;
+
+        double strafe = gamepad1.right_stick_x * driveScale;
         // Inverting turn and straight
-        double turn = -gamepad1.left_stick_x;
-        double straight = gamepad1.left_stick_y;
+        double turn = -gamepad1.left_stick_x * driveScale;
+        double straight = gamepad1.left_stick_y * driveScale;
 
         board.move(straight, strafe, turn);
 
@@ -69,6 +79,7 @@ public class MotorGamePadOpMode extends OpMode {
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
         telemetry.addData("Straight", straight);
+        telemetry.addData("Half Speed", halfSpeed);
         telemetry.addData("Motor rotations", board.getMotorRotations());
     }
 }
