@@ -56,15 +56,15 @@ public class ProgBoardMotors {
         RightRear.setPower(-straight + turn + strafe);
     }
     public void transfer(double strength) {
-        transfer.setPower(-strength);
+        transfer.setPower(strength);
     }
 
     public void shoot(double active) {
-        shooter.setPower(active);
+        shooter.setPower(-active);
     }
 
     public void intake(double power) {
-        intake.setPower(power);
+        intake.setPower(-power);
     }
     public void Strafe(double speed) {
         RightRear.setPower(speed);
