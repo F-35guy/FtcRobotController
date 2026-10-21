@@ -38,33 +38,36 @@ public class MotorGamePadOpMode extends OpMode {
 
         double strength = gamepad2.right_trigger;
         double reverse_intake = gamepad2.left_trigger;
-        board.transfer(-reverse_intake);
+        //board.intake(-reverse_intake);
 
 
         board.transfer(strength);
         if(gamepad1.a||strength > 0.1) {
             board.intake(1.0);
+        } else if (reverse_intake > 0.1) {
+            board.intake(-1.0);
+            board.transfer(-0.6);
         } else {
             board.intake(0.0);
         }
 
 
         boolean currentA = gamepad2.a;
-        boolean currentB = gamepad2.b;
+       // boolean currentB = gamepad2.b;
 
         // A = toggle full power
         if (currentA && !lastA) {
             shooterOn = !shooterOn;
 
             if (shooterOn) {
-                board.shoot(0.50);
+                board.shoot(0.05);
             } else {
                 board.shoot(0);
             }
         }
 
         // B = toggle half power
-        if (currentB && !lastB) {
+       /* if (currentB && !lastB) {
             shooterOn = !shooterOn;
 
             if (shooterOn) {
@@ -72,10 +75,10 @@ public class MotorGamePadOpMode extends OpMode {
             } else {
                 board.shoot(0);
             }
-        }
+        }*/
 
         lastA = currentA;
-        lastB = currentB;
+        //lastB = currentB;
 
 
         telemetry.addData("Strafe", strafe);
