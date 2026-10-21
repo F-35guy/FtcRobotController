@@ -29,14 +29,16 @@ public class MotorGamePadOpMode extends OpMode {
 
         double driveScale = halfSpeed ? 0.5 : 1.0;
 
-        double strafe = gamepad1.right_stick_x * driveScale;
+        double strafe = gamepad1.left_stick_x * driveScale;
         // Inverting turn and straight
-        double turn = -gamepad1.left_stick_x * driveScale;
+        double turn = -gamepad1.right_stick_x * driveScale;
         double straight = gamepad1.left_stick_y * driveScale;
 
         board.move(straight, strafe, turn);
 
         double strength = gamepad2.right_trigger;
+        double reverse_intake = gamepad2.left_trigger;
+        board.transfer(-reverse_intake);
 
 
         board.transfer(strength);
