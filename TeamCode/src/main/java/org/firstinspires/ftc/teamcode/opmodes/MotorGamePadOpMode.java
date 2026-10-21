@@ -60,7 +60,7 @@ public class MotorGamePadOpMode extends OpMode {
             shooterOn = !shooterOn;
 
             if (shooterOn) {
-                board.shoot(0.3);
+                board.shoot(0.53);
             } else {
                 board.shoot(0);
             }
