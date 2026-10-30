@@ -28,9 +28,13 @@ public class SimpleLeaveAuto extends LinearOpMode {
             board.move(-0.5,0,0);
 
             // Wait for 2 seconds
-            sleep(1000);
+            sleep(500);
 
             // Stop the robot
+            board.move(0,0.5,0);
+
+            sleep(300);
+
             board.move(0,0,0);
 
             telemetry.addData("Status", "Finished");

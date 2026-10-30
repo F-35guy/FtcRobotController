@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class ProgBoardMotors {
     private DcMotor RightRear;
@@ -11,6 +12,7 @@ public class ProgBoardMotors {
     private DcMotor transfer;
     private DcMotor shooter;
     private DcMotor intake;
+    private Servo transferStop;
     private double ticksPerRotation;
 
     public void init(HardwareMap hwMap) {
@@ -41,6 +43,12 @@ public class ProgBoardMotors {
         intake = hwMap.get(DcMotor.class, "intake");
         intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        transferStop = hwMap.get(Servo.class, "Blocker");
+        transferStop.setPosition(0);
+
+
+
         
         ticksPerRotation = RightRear.getMotorType().getTicksPerRev();
     }
@@ -66,6 +74,8 @@ public class ProgBoardMotors {
     public void intake(double power) {
         intake.setPower(-power);
     }
+
+    public void transferBlock(double pos) {transferStop.setPosition(pos);}
 
     public void setMotorSpeed(double speed) {
         RightRear.setPower(speed);
