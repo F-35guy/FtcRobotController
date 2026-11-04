@@ -41,12 +41,12 @@ public class MotorGamePadOpMode extends OpMode {
         //board.intake(-reverse_intake);
 
 
-        if(gamepad2.right_trigger >.1) {
+        /*if(gamepad2.right_trigger >.1) {
             board.transfer(.6);
         }
         else {
             board.transfer(0);
-        }
+        }*/
         if(gamepad1.a||strength > 0.1) {
             board.intake(1.0);
         } else if (reverse_intake > 0.1) {
@@ -64,9 +64,10 @@ public class MotorGamePadOpMode extends OpMode {
                 board.transfer(.5);
                 board.transferBlock(.26);
             }
-        } /*else {
+        } else {
             board.transferBlock(0);
-        }*/
+            board.transfer(0);
+        }
 
 
         boolean currentA = gamepad2.a;
