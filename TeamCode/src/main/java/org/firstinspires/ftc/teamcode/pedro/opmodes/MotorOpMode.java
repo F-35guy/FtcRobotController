@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.pedro.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.mechanisms.ProgBoardMotors;
+import org.firstinspires.ftc.teamcode.pedro.mechanisms.ProgBoardMotors;
 
 public class MotorOpMode extends OpMode {
     ProgBoardMotors board = new ProgBoardMotors();

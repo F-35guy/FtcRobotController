@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms;
+package org.firstinspires.ftc.teamcode.pedro.mechanisms;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,6 +13,7 @@ public class ProgBoardMotors {
     private DcMotor shooter;
     private DcMotor intake;
     private Servo transferStop;
+    private Servo IndicatorLight;
     private double ticksPerRotation;
 
     public void init(HardwareMap hwMap) {
@@ -46,6 +47,9 @@ public class ProgBoardMotors {
 
         transferStop = hwMap.get(Servo.class, "Blocker");
         transferStop.setPosition(0);
+
+        IndicatorLight = hwMap.get(Servo.class,"RPMLight");
+        IndicatorLight.setPosition(0);
 
 
 

@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.pedro.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.mechanisms.ProgBoard1;
+import org.firstinspires.ftc.teamcode.pedro.mechanisms.ProgBoard1;
 
 public class TouchSensorOpMode2 extends OpMode {
     ProgBoard1 board = new ProgBoard1();

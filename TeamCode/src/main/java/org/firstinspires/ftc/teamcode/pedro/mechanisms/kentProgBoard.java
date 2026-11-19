@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms;
+package org.firstinspires.ftc.teamcode.pedro.mechanisms;
 
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,6 +27,8 @@ public class kentProgBoard {
 
 
     private Servo transferStop;
+
+    private Servo IndicatorLight;
 
 
     private double ticksPerRotation;
@@ -145,11 +147,18 @@ public class kentProgBoard {
         transferStop = hwMap.get(Servo.class, "Blocker");
         transferStop.setPosition(0);
 
+        IndicatorLight = hwMap.get(Servo.class,"RPMLight");
+        IndicatorLight.setPosition(1);
+
 
 
 // Drive encoder configuration
         ticksPerRotation =
                 RightRear.getMotorType().getTicksPerRev();
+
+
+
+
     }
 
 
@@ -275,6 +284,10 @@ public class kentProgBoard {
     // ====================================
     public void transferBlock(double pos) {
         transferStop.setPosition(pos);
+    }
+
+    public void Light(double color) {
+        IndicatorLight.setPosition(color);
     }
 
 

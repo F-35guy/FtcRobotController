@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.mechanisms;
+package org.firstinspires.ftc.teamcode.pedro.mechanisms;
 
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class ProgBoard2 {
+public class ProgBoard1 {
     private DigitalChannel touchsensor;
 
     public void init(HardwareMap hwMap) {
@@ -11,9 +11,6 @@ public class ProgBoard2 {
         touchsensor.setMode(DigitalChannel.Mode.INPUT);
     }
     public boolean getTouchSensorState() {
-        return !touchsensor.getState();
-    }
-    public boolean isTouchSensorReleased() {
         return touchsensor.getState();
     }
 }

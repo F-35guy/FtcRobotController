@@ -1,11 +1,13 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.pedro.opmodes;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-import org.firstinspires.ftc.teamcode.mechanisms.kentProgBoard;
+import org.firstinspires.ftc.teamcode.pedro.mechanisms.kentProgBoard;
 
 
 @TeleOp
@@ -13,11 +15,22 @@ public class Kenton extends OpMode {
 
 
     kentProgBoard board = new kentProgBoard();
+    private final ElapsedTime transferTimer = new ElapsedTime();
+
+
+    // Transfer cycle timing (in seconds)
+    private static final double CYCLE_RUN_TIME = 1;
+    private static final double CYCLE_PAUSE_TIME = .25;
 
 
 
     // Shooter power: 52.5% (motor power range is -1.0 to 1.0)
-    private static final double SHOOTER_POWER = 0.475;
+    double SHOOTER_POWER = 0.465;
+   // private static final double IDEAL_RPM = SHOOTER_POWER * 6000;
+   // private static final double TICKS_PER_REVOLUTION = 28;
+   // private static final double TPS = (IDEAL_RPM/60) * TICKS_PER_REVOLUTION;
+   // double CurrentTPS = board.getShooterRPM();
+   // double CurrentRPM = (CurrentTPS/TICKS_PER_REVOLUTION) * 60;
 
 
 
@@ -38,6 +51,7 @@ public class Kenton extends OpMode {
         halfSpeed = false;
         lastA = false;
         lastRightStickButton = false;
+        transferTimer.reset();
 
 
         board.stopShooter();
@@ -71,7 +85,7 @@ public class Kenton extends OpMode {
 
 
         double driveScale = halfSpeed ? 0.5 : 1.0;
-        double strafe = gamepad1.right_stick_x * driveScale;
+        double strafe = -gamepad1.right_stick_x * driveScale;
 
 
 
@@ -79,8 +93,26 @@ public class Kenton extends OpMode {
         double turn = -gamepad1.left_stick_x * driveScale;
         double straight = gamepad1.right_stick_y * driveScale;
 
+        VoltageSensor batteryVolts = hardwareMap.get(VoltageSensor.class, "Control Hub");
+        double voltage = batteryVolts.getVoltage();
+
+        /*if (voltage >= 12.8) {
+            SHOOTER_POWER = 0.46;
+        } else if (voltage <= 12) {
+            SHOOTER_POWER = 0.475;
+        } else {
+            SHOOTER_POWER = 0.5;
+        }*/
+
 
         board.move(straight, strafe, turn);
+        if (straight == 0&&(strafe == 0 && turn == 0)) {
+            board.move(0,0,0);
+        }
+
+        //if (CurrentRPM == IDEAL_RPM) {
+          //  board.Light(1);
+        //}
 
 
 
@@ -124,15 +156,26 @@ public class Kenton extends OpMode {
 
 
 
-// Right bumper or X: feed game pieces.
-        // Transfer runs only when the shooter is on.
+        if (!feed) {
+            transferTimer.reset();
+        }
+
+// Right bumper or X: continuously cycle transfer (RUN and PAUSE) as long as held.
         if (feed) {
-            intakePower = 0.6;
+            //intakePower = 0.6;
+
+
+            double cycleDuration = CYCLE_RUN_TIME + CYCLE_PAUSE_TIME;
+            double elapsed = transferTimer.seconds();
 
 
             if (shooterOn) {
-                transferPower = 0.5;
                 blockerPosition = 0.26;
+                double phase = elapsed % cycleDuration;
+                if (phase < CYCLE_RUN_TIME) {
+                    transferPower = 0.25;
+                    intakePower = .10;
+                }
             }
         }
 
@@ -175,6 +218,17 @@ public class Kenton extends OpMode {
                 shooterOn ? SHOOTER_POWER * 100 + "%" :
                         "0%"
         );
+
+
+        if (feed && shooterOn) {
+            double elapsed = transferTimer.seconds();
+            double cycleDuration = CYCLE_RUN_TIME + CYCLE_PAUSE_TIME;
+            int currentCycle = (int) (elapsed / cycleDuration) + 1;
+            boolean isRunning = (elapsed % cycleDuration) < CYCLE_RUN_TIME;
+            telemetry.addData("Transfer State", "Cycle " + currentCycle + " (" + (isRunning ? "RUN" : "PAUSE") + ")");
+        } else {
+            telemetry.addData("Transfer State", "IDLE");
+        }
 
 
         double actualRPM = board.getShooterRPM();
