@@ -54,33 +54,6 @@ public class Kenton extends OpMode {
     public void loop() {
 
         // ====================================
-        // DRIVE CONTROLS
-        // ====================================
-        boolean currentRightStickButton = gamepad1.right_stick_button;
-
-        // Toggle half speed
-        if (currentRightStickButton && !lastRightStickButton) {
-            halfSpeed = !halfSpeed;
-        }
-
-        lastRightStickButton = currentRightStickButton;
-
-        double driveScale = halfSpeed ? 0.5 : 1.0;
-        double strafe = -gamepad1.right_stick_x * driveScale;
-
-        // Inverting turn and straight
-        double turn = -gamepad1.left_stick_x * driveScale;
-        double straight = gamepad1.right_stick_y * driveScale;
-
-        VoltageSensor batteryVolts = hardwareMap.get(VoltageSensor.class, "Control Hub");
-        double voltage = batteryVolts.getVoltage();
-
-        board.move(straight, strafe, turn);
-        if (straight == 0 && (strafe == 0 && turn == 0)) {
-            board.move(0, 0, 0);
-        }
-
-        // ====================================
         // SHOOTER CONTROLS
         // ====================================
         boolean currentA = gamepad2.a;
@@ -114,6 +87,36 @@ public class Kenton extends OpMode {
             board.shootPower(SHOOTER_POWER);
         } else {
             board.stopShooter();
+        }
+
+        // Is either shooter mode currently ON?
+        boolean isShooterActive = shooterOn || rpmShooterOn;
+
+        // ====================================
+        // DRIVE CONTROLS
+        // ====================================
+        boolean currentRightStickButton = gamepad1.right_stick_button;
+
+        // Toggle manual half speed
+        if (currentRightStickButton && !lastRightStickButton) {
+            halfSpeed = !halfSpeed;
+        }
+        lastRightStickButton = currentRightStickButton;
+
+        // Drive power drops to 50% (0.5) if manual half speed is toggled OR if shooter is active in either mode
+        double driveScale = (halfSpeed || isShooterActive) ? 0.5 : 1.0;
+        double strafe = -gamepad1.right_stick_x * driveScale;
+
+        // Inverting turn and straight
+        double turn = -gamepad1.left_stick_x * driveScale;
+        double straight = gamepad1.right_stick_y * driveScale;
+
+        VoltageSensor batteryVolts = hardwareMap.get(VoltageSensor.class, "Control Hub");
+        double voltage = batteryVolts.getVoltage();
+
+        board.move(straight, strafe, turn);
+        if (straight == 0 && (strafe == 0 && turn == 0)) {
+            board.move(0, 0, 0);
         }
 
         // ====================================
@@ -184,7 +187,8 @@ public class Kenton extends OpMode {
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
         telemetry.addData("Straight", straight);
-        telemetry.addData("Half Speed", halfSpeed);
+        telemetry.addData("Drive Power Scale", (driveScale * 100) + "%" + (isShooterActive ? " (Shooter Active Auto-50%)" : ""));
+        telemetry.addData("Manual Half Speed", halfSpeed);
         telemetry.addData("Motor Rotations", board.getMotorRotations());
         telemetry.addData("Power Shooter (A)", shooterOn ? "ON" : "OFF");
         telemetry.addData("RPM Shooter (D-Pad Down)", rpmShooterOn ? "ON" : "OFF");
